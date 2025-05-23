@@ -1,0 +1,173 @@
+<!Doctype HTML>
+	<html>
+	<head>
+		<title>Admin-user options</title>
+		<link rel="stylesheet" href="cssforadmin.css" type="text/css"/>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<style>
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+		#space{
+		padding-bottom:70px;
+	}
+    </style> 
+	</head>
+ 
+
+	<body>
+		
+	<div id="mySidenav" class="sidenav">
+		<p class="logo"><span>Saplingo<br>Admin</br></span></p>
+	  <a href="admin.php" class="icon-a"><i class="fa fa-dashboard icons"></i>   Dashboard</a>
+	  <a href="userop.php"class="icon-a"><i class="fa fa-users icons"></i>   User Options</a>
+	  <a href="orderop.php"class="icon-a"><i class="fa fa-shopping-bag icons"></i>  Order Options</a>
+	  <a href="schedule_order.php"class="icon-a"><i class="fa fa-tasks icons"></i>  User Queries</a>
+	  <a href="all_product.php"class="icon-a"><i class="fa fa-user icons"></i>   All Products</a>
+	  <a href="Alogout.php"class="icon-a"><i class="fa fa-user icons"></i>   log out</a>
+
+	</div>
+	<div id="main">
+
+		<div class="head">
+			<div class="col-div-6">
+	<span style="font-size:30px;cursor:pointer; color: white;" class="nav"  >☰ User Options</span>
+	<span style="font-size:30px;cursor:pointer; color: white;" class="nav2"  >☰ User Options</span>
+	</div>
+		
+		<div class="col-div-6">
+		<div class="profile">
+
+			<img src="a.png" class="pro-img" style="border-radius:50%;" />
+			<p>Admin<span>Saplingo.in</span></p>
+			<a href="Alogout.php"><button>Logout</button></a>
+			
+	</div>
+		<div class="clearfix"></div>
+	</div>
+
+		<div class="clearfix"></div>
+		<br/>
+		
+		
+		<div class="col-div-8">
+			<div class="box-8">
+			<div class="content-box">
+				<p>All Users</p>
+				<br/>
+				<?php
+// Database connection information
+$servername = "localhost"; // Change to your database server
+$hostname = "root"; // Change to your database username
+$password = ""; // Change to your database password
+$dbname = "saplingo"; // Change to your database name
+
+// Create a connection to the database
+$conn = new mysqli($servername, $hostname, $password, $dbname);
+
+// Check the connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Check if a delete action was triggered
+if (isset($_POST['delete_user'])) {
+    $uid_to_delete = $_POST['delete_user'];
+
+    // SQL query to delete a user record
+    $delete_sql = "DELETE FROM user WHERE uid = $uid_to_delete";
+
+    if ($conn->query($delete_sql) === TRUE) {
+		echo '<script>alert("User record deleted successfully.");</script>';
+    } else {
+        echo "Error deleting user record: " . $conn->error;
+    }
+}
+
+// SQL query to retrieve data from the "user" table
+$sql = "SELECT uid, username, status FROM user";
+
+// Execute the query
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    // Output HTML table headers
+    echo '<table>';
+    echo '<tr><th>User ID</th><th>Username</th><th>User Status</th><th>Action</th></tr>';
+
+    // Output data from each row
+    while ($row = $result->fetch_assoc()) {
+        echo '<tr>';
+        echo '<td>' . $row['uid'] . '</td>';
+        echo '<td>' . $row['username'] . '</td>';
+        echo '<td>' . $row['status'] . '</td>';
+        echo '<td><form method="post"><input type="hidden" name="delete_user" value="' . $row['uid'] . '"><input type="submit" value="Delete"></form></td>';
+        echo '</tr>';
+    }
+
+    // Close the table
+    echo '</table>';
+} else {
+    echo "No data found in the 'user' table.";
+}
+
+// Close the database connection
+$conn->close();
+?><br>
+<a href="adminuseradd.php" class="button">Add User</a>
+<div id="space"></div>
+
+
+			</div>
+		</div>
+		</div>
+
+		
+			
+		<div class="clearfix"></div>
+	</div>
+
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+
+	  $(".nav").click(function(){
+	    $("#mySidenav").css('width','70px');
+	    $("#main").css('margin-left','70px');
+	    $(".logo").css('visibility', 'hidden');
+	    $(".logo span").css('visibility', 'visible');
+	     $(".logo span").css('margin-left', '-10px');
+	     $(".icon-a").css('visibility', 'hidden');
+	     $(".icons").css('visibility', 'visible');
+	     $(".icons").css('margin-left', '-8px');
+	      $(".nav").css('display','none');
+	      $(".nav2").css('display','block');
+	  });
+
+	$(".nav2").click(function(){
+	    $("#mySidenav").css('width','300px');
+	    $("#main").css('margin-left','300px');
+	    $(".logo").css('visibility', 'visible');
+	     $(".icon-a").css('visibility', 'visible');
+	     $(".icons").css('visibility', 'visible');
+	     $(".nav").css('display','block');
+	      $(".nav2").css('display','none');
+	 });
+
+	</script>
+
+	</body>
+
+
+	</html>

@@ -1,0 +1,22 @@
+*{
+    font-weight: 700;
+}
+body{
+    background-color:rgb(232, 238, 239);
+    font-weight: 700;
+}
+.nav-item:hover{
+    transform: scale(1.2,1.2);
+    font-size: 1.2em;
+    text-decoration: solid;
+}
+.navbar-brand:hover{
+    text-decoration: solid;
+    transform: scale(1.2,1.2);
+    color:chartreuse;
+
+}
+.my-text:focus-visible{
+    display:block;
+    color:red;
+}

@@ -1,0 +1,67 @@
+<?php
+// Include your authentication mechanism here
+
+// Database connection information
+$servername = "localhost"; // Change to your database server
+$hostname = "root"; // Change to your database username
+$password = ""; // Change to your database password
+$dbname = "saplingo"; // Change to your database name
+
+// Create a connection to the database
+$conn = new mysqli($servername, $hostname, $password, $dbname);
+
+// Check the connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// SQL query to retrieve all product details
+$sql = "SELECT * FROM sales_items"; // Replace "your_product_table" with the actual name of your product table
+
+// Execute the query
+$result = $conn->query($sql);
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page - Product Details</title>
+    <!-- Add any additional CSS styling here -->
+</head>
+<body>
+
+    <h1>Product Details - Admin Page</h1>
+
+    <?php
+    if ($result->num_rows > 0) {
+        // Output HTML table headers
+        echo '<table border="1">';
+        echo '<tr><th>Product ID</th><th>Item Name</th><th>Image</th><th>Unit Price</th><th>Quantity</th></tr>';
+
+        // Output data from each row
+        while ($row = $result->fetch_assoc()) {
+            echo '<tr>';
+            echo '<td>' . $row['SI_id'] . '</td>';
+            echo '<td>' . $row['item_name'] . '</td>';
+            echo '<td><img src="' . $row['Simage'] . '" alt="' . $row['item_name'] . '" width="100" height="80"></td>';
+            echo '<td>' . number_format($row['unit_price'], 2) . '</td>';
+            echo '<td>' . $row['quantity'] . '</td>';
+            echo '</tr>';
+        }
+
+        // Close the table
+        echo '</table>';
+    } else {
+        echo '<p>No products found.</p>';
+    }
+
+    // Close the database connection
+    $conn->close();
+    ?>
+
+    <!-- Add any additional JavaScript or HTML here -->
+
+</body>
+</html>
